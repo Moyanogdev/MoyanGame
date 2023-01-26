@@ -1,11 +1,39 @@
+import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
+import Header from './src/components/Header';
+import StartGameScreen from './src/screens/StartGameScreen';
+import GameScreen from './src/screens/GameScreen';
+
 
 export default function App() {
+  const [loaded] = useFonts({
+    TekoRegular: require('./src/assets/fonts/Teko-Regular.ttf')
+  })
+
+  const [userNumber, setUserNumber] = useState()
+
+  const handleStartGame = (selectedNumber) => {
+    setUserNumber(selectedNumber)
+  }
+
+  let content = <StartGameScreen onStartGame={handleStartGame}/>
+
+  if (userNumber) {
+    content = <GameScreen />
+  }
+
+  if(!loaded) {
+    return null
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
+      <Header title={'Moyan Game'} 
+      newStyles={{fontFamily: 'TekoRegular'}}/>
+      {content}
     </View>
   );
 }
@@ -13,8 +41,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  }
 });
