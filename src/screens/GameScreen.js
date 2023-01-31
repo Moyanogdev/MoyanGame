@@ -3,7 +3,7 @@ import { Button, StyleSheet, Text, View } from 'react-native'
 import Card from '../components/Card'
 import colors from '../constants/colors'
 
-const GameScreen = () => {
+const GameScreen = ({handleResult}) => {
     const [currentGuess, setCurrentGuess] = useState()
 
     useEffect(() => {
@@ -15,8 +15,8 @@ const GameScreen = () => {
       <Text style={styles.textColor}>Guess the number</Text>
       <Text style={styles.textColor}>{currentGuess}</Text>
       <Card newStyles={styles.buttonContainer}>
-        <Button title='Minor' onPress={() => console.log('Minor')}/>
-        <Button title='Mayor' onPress={() => console.log('Mayor')}/>
+        <Button style={{color: 'white'}} title='Lower' onPress={() => handleResult('lower', currentGuess)}/>
+        <Button title='Higher' onPress={() => handleResult('higher', currentGuess)}/>
       </Card>
     </View>
   )

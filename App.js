@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font';
 import Header from './src/components/Header';
 import StartGameScreen from './src/screens/StartGameScreen';
 import GameScreen from './src/screens/GameScreen';
+import ResultScreen from './src/screens/ResultScreen';
 
 
 export default function App() {
@@ -13,15 +14,29 @@ export default function App() {
   })
 
   const [userNumber, setUserNumber] = useState()
+  const [winOrLose, setWinOrLose] = useState(false)
+  const [result, setResult] = useState('')
 
   const handleStartGame = (selectedNumber) => {
     setUserNumber(selectedNumber)
   }
 
+  const handleFinishGame = (selection, Number) => {
+    if((selection === 'Lower' && userNumber < Number) ||
+    (selection === 'Higher' && userNumber > Number)){
+      setResult('Win')
+    } else {
+      setResult('Lose')
+    }
+    setWinOrLose(true)
+  }
+
   let content = <StartGameScreen onStartGame={handleStartGame}/>
 
-  if (userNumber) {
-    content = <GameScreen />
+  if (userNumber && winOrLose === true) {
+    content = <ResultScreen result={result}/>
+  } else if (userNumber) {
+    content = <GameScreen handleResult={handleFinishGame}/>
   }
 
   if(!loaded) {
